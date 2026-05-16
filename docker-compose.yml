@@ -1,0 +1,10 @@
+services:
+  webhook-server:
+    build: .
+    image: github-webhook-server
+    container_name: webhook-server
+    ports:
+      - "3000:3000"
+    environment:
+      - SECRET=${SECRET}
+    restart: unless-stopped
