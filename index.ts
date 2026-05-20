@@ -18,7 +18,7 @@ const secret_verification_middleware = async (req: express.Request, res: express
         return;
     }
 
-    const signature = (req.headers['x-hub-signature-256'] as string).split('=')[1];
+    const signature = req.headers['x-hub-signature-256'] as string;
     const payload = req.body.toString();
 
     if(!(await webhooks.verify(payload, signature))) {
