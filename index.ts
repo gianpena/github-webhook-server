@@ -1,5 +1,7 @@
 import express from 'express';
 import { Webhooks } from '@octokit/webhooks';
+import { exec } from 'child_process';
+import path from 'path';
 
 
 if(!process.env.SECRET) {
@@ -35,6 +37,12 @@ app.use(secret_verification_middleware);
 
 app.post('/', async (req: express.Request, res: express.Response) => {
     console.log(req.body);
+    const actionScript = path.join(process.cwd(), 'action.sh');
+    exec(actionScript, (error, stdout, stderr) => {
+        if (error) console.error(`action.sh error: ${error.message}`);
+        if (stdout) console.log(`action.sh stdout: ${stdout}`);
+        if (stderr) console.error(`action.sh stderr: ${stderr}`);
+    });
     return res.status(200).send('OK');
 });
 
